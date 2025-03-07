@@ -3,63 +3,40 @@ import streamlit as st
 #import datetime
 import pandas as pd
 import requests
+import numpy as np
+
+
 
 '''
-# TaxiFareModel front
+### Taxifare Prediction
 '''
 
-st.markdown('''
-Remember that there are several ways to output content into your web page...
 
-Either as with the title by just creating a string (or an f-string). Or as with this paragraph using the `st.` functions
-''')
+def get_map_data():
 
-'''
-## Here we would like to add some controllers in order to ask the user to select the parameters of the ride
+    return pd.DataFrame(
+            np.random.randn(5, 2) / [50, 50] + [40.7831, -73.9712],
+            columns=['lat', 'lon']
+        )
 
-1. Let's ask for:
-- date and time
-- pickup longitude
-- pickup latitude
-- dropoff longitude
-- dropoff latitude
-- passenger count
-'''
+df = get_map_data()
 
-'''
-## Once we have these, let's call our API in order to retrieve a prediction
+st.map(df)
 
-See ? No need to load a `model.joblib` file in this app, we do not even need to know anything about Data Science in order to retrieve a prediction...
-
-🤔 How could we call our API ? Off course... The `requests` package 💡
-'''
-
-#1. Date and time:
-#pickup_datetime  = st.date_input(
-#    "Pickup datetime:",
- #   datetime.datetime(2019, 7, 6, 8, 45))
-#st.write('Pickup date is:', pickup_datetime )
-
+#1. Pickup datetime:
 pickup_datetime = st.text_input('Pickup datetime:', '2014-07-06 19:18:00')
-
-#st.write('Pickup date is', pickup_datetime)
-
 
 #2. Pickup longitude:
 pickup_longitude  = st.number_input('Insert the pickup longitude', -73.950655, format="%.6f")
-#st.write('Pickup longitude is ', pickup_longitude )
 
 #3. Pickup latitude:
 pickup_latitude  = st.number_input('Insert the pickup latitude', 40.783282, format="%.6f")
-#st.write('Pickup latitude is ', pickup_latitude )
 
 #4. Dropoff longitude:
 dropoff_longitude  = st.number_input('Insert the dropoff longitude', -73.984365, format="%.6f")
-#st.write('Dropoff longitude is ', dropoff_longitude )
 
 #5. Dropoff latitude:
 dropoff_latitude  = st.number_input('Insert the dropoff latitude', 40.769802, format="%.6f")
-#st.write('Dropoff latitude is ', dropoff_latitude )
 
 #6. Person count:
 def get_select_box_data():
@@ -76,27 +53,8 @@ filtered_df = df[df['passenger_count'] == passenger_count]
 
 passenger_count = int(filtered_df.iloc[0,0])
 
-#st.write('total passenger is :', passenger_count)
-
-
 
 url = 'https://taxifare.lewagon.ai/predict'
-
-if url == 'https://taxifare.lewagon.ai/predict':
-
-    st.markdown('Maybe you want to use your own API for the prediction, not the one provided by Le Wagon...')
-
-'''
-
-2. Let's build a dictionary containing the parameters for our API...
-
-3. Let's call our API using the `requests` package...
-
-4. Let's retrieve the prediction from the **JSON** returned by the API...
-
-## Finally, we can display the prediction to the user
-'''
-
 
 
 if st.button('Get Fare'):
@@ -112,8 +70,6 @@ if st.button('Get Fare'):
           "dropoff_latitude": str(dropoff_latitude),
           "passenger_count": str(passenger_count)
           }
-
-    #response = requests.post(url, headers=params)
 
     # Converte os parâmetros para um formato de URL (query string)
     query_params = "&".join([f"{key}={value}" for key, value in params.items()])
