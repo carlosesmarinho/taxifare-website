@@ -60,7 +60,7 @@ url = 'https://taxifare.lewagon.ai/predict'
 if st.button('Get Fare'):
     # print is visible in the server output, not in the page
     print('Getting fare..!')
-    st.write('Getting fare..! 🎉')
+    st.write('Getting fare..! 🧙‍♂️')
 
     params = {
         "pickup_datetime": str(pickup_datetime),
@@ -85,4 +85,4 @@ if st.button('Get Fare'):
         st.error("Error: Could not get a response from the API")
 
 else:
-    st.write('Please, input the requested information')
+    st.write('Please, input the requested information above')
